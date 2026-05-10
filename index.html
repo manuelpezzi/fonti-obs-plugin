@@ -3,13 +3,19 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gaming Checklist OBS</title>
     <style>
+        /* Sfondo trasparente e layout orizzontale */
         body {
             background: transparent;
-            font-family: sans-serif;
+            margin: 0;
+            padding: 10px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
-            gap: 10px;
+            gap: 15px;
             flex-wrap: wrap;
+            overflow: hidden;
         }
 
         .game-card {
@@ -17,10 +23,11 @@
             width: 120px;
             height: 160px;
             cursor: pointer;
-            border: 2px solid #fff;
-            border-radius: 8px;
+            border: 3px solid #fff;
+            border-radius: 12px;
             overflow: hidden;
-            transition: 0.2s;
+            transition: all 0.3s ease;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
         }
 
         .game-card img {
@@ -29,66 +36,84 @@
             object-fit: cover;
         }
 
+        /* Effetto quando il gioco è completato */
         .game-card.completed {
-            filter: grayscale(100%) brightness(40%);
+            filter: grayscale(100%) brightness(30%);
             border-color: #00ff00;
+            transform: scale(0.95);
         }
 
+        /* La spunta verde */
         .game-card.completed::after {
             content: '✔️';
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 50px;
+            font-size: 60px;
             color: #00ff00;
+            text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.8);
+        }
+
+        .game-card:hover {
+            transform: scale(1.05);
+            border-color: #00d2ff;
         }
     </style>
 </head>
 
 <body>
 
-    <!-- Aggiungi qui i tuoi giochi con un ID univoco (id="gioco1", etc) -->
+    <!-- LISTA GIOCHI: Ogni ID deve essere unico (game1, game2, ecc.) -->
+
     <div class="game-card" id="game1" onclick="toggleGame('game1')">
-        <img src="img/fortnite.jpg" alt="fortnite">
+        <img src="img/fortnite.jpg" alt="Fortnite">
     </div>
 
     <div class="game-card" id="game2" onclick="toggleGame('game2')">
-        <img src="img/dialed.png" alt="dialed">
+        <img src="img/dialed.png" alt="Dialed">
     </div>
+
     <div class="game-card" id="game3" onclick="toggleGame('game3')">
-        <img src="img/fallguys.jpg" alt="fallguys">
+        <img src="img/fallguys.jpg" alt="Fall Guys">
     </div>
+
     <div class="game-card" id="game4" onclick="toggleGame('game4')">
-        <img src="img/flagle.jpg" alt="flagle">
+        <img src="img/flagle.jpg" alt="Flagle">
     </div>
+
     <div class="game-card" id="game5" onclick="toggleGame('game5')">
-        <img src="img/geog.jpg" alt="geoguesser">
+        <img src="img/geog.jpg" alt="Geoguesser">
     </div>
+
     <div class="game-card" id="game6" onclick="toggleGame('game6')">
-        <img src="img/higer.png" alt="higer">
+        <img src="img/higer.png" alt="Higher Lower">
     </div>
+
     <div class="game-card" id="game7" onclick="toggleGame('game7')">
-        <img src="img/images.png" alt="timeguess">
+        <img src="img/images.png" alt="Timeguess">
     </div>
-
-
 
     <script>
-        // Funzione per cliccare e salvare
+        // Funzione per attivare/disattivare la spunta e salvare lo stato
         function toggleGame(id) {
             const el = document.getElementById(id);
-            el.classList.toggle('completed');
-            const isCompleted = el.classList.contains('completed');
-            localStorage.setItem(id, isCompleted); // Salva lo stato nel browser
+            if (el) {
+                el.classList.toggle('completed');
+                const isCompleted = el.classList.contains('completed');
+                localStorage.setItem(id, isCompleted);
+            }
         }
 
-        // Carica lo stato salvato all'apertura
-        document.querySelectorAll('.game-card').forEach(card => {
-            if (localStorage.getItem(card.id) === 'true') {
-                card.classList.add('completed');
-            }
-        });
+        // Al caricamento della pagina, ripristina lo stato salvato
+        window.onload = () => {
+            document.querySelectorAll('.game-card').forEach(card => {
+                const savedState = localStorage.getItem(card.id);
+                if (savedState === 'true') {
+                    card.classList.add('completed');
+                }
+            });
+        };
     </script>
 </body>
 
